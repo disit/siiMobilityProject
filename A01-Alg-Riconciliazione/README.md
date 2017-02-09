@@ -5,11 +5,12 @@ Brief description and links to documents where to find details and links to onli
 
 **Dependencies:**
 
-- dependency 1
+- dependency 1 (e.g. Tomcat 7+, MySQL 5.5+)
 - dependency 2
 
 **Installation:**
 
+- build sources
 - step 1
 - step 2
 
