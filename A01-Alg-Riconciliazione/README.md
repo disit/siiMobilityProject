@@ -13,4 +13,4 @@ Brief description and links to documents where to find details and links to onli
 - step 1
 - step 2
 
-**License:** e.g. LGPL
+**License:** GNU Affero GPL version 3 ( AGPL )
