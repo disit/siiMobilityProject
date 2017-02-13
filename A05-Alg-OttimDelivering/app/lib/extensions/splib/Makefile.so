@@ -1,0 +1,268 @@
+
+SHELL = /bin/sh
+
+# V=0 quiet, V=1 verbose.  other values don't work.
+V = 0
+Q1 = $(V:1=)
+Q = $(Q1:0=@)
+ECHO1 = $(V:1=@:)
+ECHO = $(ECHO1:0=@echo)
+NULLCMD = :
+
+#### Start of system configuration section. ####
+
+srcdir = src
+topdir = /home/tigli/.rvm/rubies/ruby-2.3.0/include/ruby-2.3.0
+hdrdir = $(topdir)
+arch_hdrdir = /home/tigli/.rvm/rubies/ruby-2.3.0/include/ruby-2.3.0/x86_64-linux
+PATH_SEPARATOR = :
+VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
+
+prefix = $(DESTDIR)/home/tigli/.rvm/rubies/ruby-2.3.0
+
+rubysitearchprefix = $(rubylibprefix)/$(sitearch)
+
+rubyarchprefix = $(rubylibprefix)/$(arch)
+
+rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
+
+exec_prefix = $(prefix)
+
+vendorarchhdrdir = $(vendorhdrdir)/$(sitearch)
+
+sitearchhdrdir = $(sitehdrdir)/$(sitearch)
+
+rubyarchhdrdir = $(rubyhdrdir)/$(arch)
+
+vendorhdrdir = $(rubyhdrdir)/vendor_ruby
+
+sitehdrdir = $(rubyhdrdir)/site_ruby
+
+rubyhdrdir = $(includedir)/$(RUBY_VERSION_NAME)
+
+vendorarchdir = $(vendorlibdir)/$(sitearch)
+
+vendorlibdir = $(vendordir)/$(ruby_version)
+
+vendordir = $(rubylibprefix)/vendor_ruby
+
+sitearchdir = $(sitelibdir)/$(sitearch)
+
+sitelibdir = $(sitedir)/$(ruby_version)
+
+sitedir = $(rubylibprefix)/site_ruby
+
+rubyarchdir = $(rubylibdir)/$(arch)
+
+rubylibdir = $(rubylibprefix)/$(ruby_version)
+
+sitearchincludedir = $(includedir)/$(sitearch)
+
+archincludedir = $(includedir)/$(arch)
+
+sitearchlibdir = $(libdir)/$(sitearch)
+
+archlibdir = $(libdir)/$(arch)
+
+ridir = $(datarootdir)/$(RI_BASE_NAME)
+
+mandir = $(datarootdir)/man
+
+localedir = $(datarootdir)/locale
+
+libdir = $(exec_prefix)/lib
+
+psdir = $(docdir)
+
+pdfdir = $(docdir)
+
+dvidir = $(docdir)
+
+htmldir = $(docdir)
+
+infodir = $(datarootdir)/info
+
+docdir = $(datarootdir)/doc/$(PACKAGE)
+
+oldincludedir = $(DESTDIR)/usr/include
+
+includedir = $(prefix)/include
+
+localstatedir = $(prefix)/var
+
+sharedstatedir = $(prefix)/com
+
+sysconfdir = $(prefix)/etc
+
+datadir = $(datarootdir)
+
+datarootdir = $(prefix)/share
+
+libexecdir = $(exec_prefix)/libexec
+
+sbindir = $(exec_prefix)/sbin
+
+bindir = $(exec_prefix)/bin
+
+archdir = $(rubyarchdir)
+
+
+
+CC = gcc
+CXX = g++
+LIBRUBY = $(LIBRUBY_SO)
+LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
+LIBRUBYARG_SHARED = -Wl,-R$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)
+LIBRUBYARG_STATIC = -Wl,-R/home/tigli/.rvm/rubies/ruby-2.3.0/lib -L/home/tigli/.rvm/rubies/ruby-2.3.0/lib -lruby-static
+empty =
+OUTFLAG = -o $(empty)
+COUTFLAG = -o $(empty)
+
+RUBY_EXTCONF_H = 
+cflags   =  $(optflags) $(debugflags) $(warnflags)
+cxxflags =  $(optflags) $(debugflags) $(warnflags) 
+optflags = -O3 -fno-fast-math 
+debugflags = -ggdb3
+warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat -Wno-maybe-uninitialized
+CCDLFLAGS = -fPIC
+CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC $(ARCH_FLAG)
+INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir) -I/home/tigli/.rvm/gems/ruby-2.3.0@sii_mobility_v1.2/gems/rice-2.1.1/ruby/lib/include
+DEFS     = 
+CPPFLAGS =   $(DEFS) $(cppflags)  -I/home/tigli/.rvm/gems/ruby-2.3.0@sii_mobility_v1.2/gems/rice-2.1.1/ruby/lib/include
+CXXFLAGS = -std=c++1y $(CFLAGS) -Wall -g -DSII_MOBILITY
+ldflags  = -L. -fstack-protector -rdynamic -Wl,-export-dynamic -L/home/tigli/.rvm/gems/ruby-2.3.0@sii_mobility_v1.2/gems/rice-2.1.1/ruby/lib/lib -lrice
+dldflags =  
+ARCH_FLAG = 
+DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
+LDSHARED = g++ -shared
+LDSHAREDXX = $(CXX) -shared
+AR = ar
+EXEEXT = 
+
+
+RUBY_INSTALL_NAME = $(RUBY_BASE_NAME)
+
+RUBY_SO_NAME = ruby
+
+RUBYW_INSTALL_NAME = 
+
+RUBY_VERSION_NAME = $(RUBY_BASE_NAME)-$(ruby_version)
+
+RUBYW_BASE_NAME = rubyw
+
+RUBY_BASE_NAME = ruby
+
+
+arch = x86_64-linux
+sitearch = $(arch)
+ruby_version = 2.3.0
+ruby = $(bindir)/$(RUBY_BASE_NAME)
+RUBY = $(ruby)
+ruby_headers = $(hdrdir)/ruby.h $(hdrdir)/ruby/ruby.h $(hdrdir)/ruby/defines.h $(hdrdir)/ruby/missing.h $(hdrdir)/ruby/intern.h $(hdrdir)/ruby/st.h $(hdrdir)/ruby/subst.h $(arch_hdrdir)/ruby/config.h
+
+RM = rm -f
+RM_RF = $(RUBY) -run -e rm -- -rf
+RMDIRS = rmdir --ignore-fail-on-non-empty -p
+MAKEDIRS = /bin/mkdir -p
+INSTALL = /usr/bin/install -c
+INSTALL_PROG = $(INSTALL) -m 0755
+INSTALL_DATA = $(INSTALL) -m 644
+COPY = cp
+TOUCH = exit >
+
+#### End of system configuration section. ####
+
+preload = 
+
+
+CXX = g++
+
+libpath = . $(libdir)
+LIBPATH =  -L. -L$(libdir) -Wl,-R$(libdir)
+DEFFILE = 
+
+CLEANFILES = mkmf.log
+DISTCLEANFILES = 
+DISTCLEANDIRS = 
+
+extout = 
+extout_prefix = 
+target_prefix = 
+LOCAL_LIBS = 
+LIBS = -Wl,-R/home/tigli/.rvm/rubies/ruby-2.3.0/lib -L/home/tigli/.rvm/rubies/ruby-2.3.0/lib -lboost_system -lboost_filesystem -lboost_serialization -lxerces-c -lcurlpp -lcurl -lpthread -lz -lprotobuf-lite -Wl,--whole-archive -losmpbf -Wl,--no-whole-archive -L/home/tigli/.rvm/rubies/ruby-2.3.0/lib -lruby -lgmp -ldl -lcrypt -lm -lc
+ORIG_SRCS = 
+SRCS = $(ORIG_SRCS) 
+OBJS = geo.o utility.o json_utf8.o json_parser.o logger.o bitset.o raptor_timetable_builder.o algorithm.o cache.o engine.o route_planner_extC.o
+HDRS = 
+TARGET = splib
+TARGET_NAME = 
+TARGET_ENTRY = Init_$(TARGET_NAME)
+DLLIB =  $(TARGET).so
+EXTSTATIC = 
+STATIC_LIB = 
+
+TIMESTAMP_DIR = .
+BINDIR        = $(bindir)
+RUBYCOMMONDIR = $(sitedir)$(target_prefix)
+RUBYLIBDIR    = $(sitelibdir)$(target_prefix)
+RUBYARCHDIR   = $(sitearchdir)$(target_prefix)
+HDRDIR        = $(rubyhdrdir)/ruby$(target_prefix)
+ARCHHDRDIR    = $(rubyhdrdir)/$(arch)/ruby$(target_prefix)
+
+TARGET_SO     = $(DLLIB)
+CLEANLIBS     = $(TARGET).so 
+CLEANOBJS     = *.o  *.bak
+
+all:	$(DLLIB) clean
+.PHONY: all 
+.PHONY: clean  
+
+CLEANFILES = mkmf.log
+RM = rm -f
+
+clean: 
+	-$(Q)$(RM) $(CLEANOBJS) $(CLEANFILES) .*.time
+
+.SUFFIXES: .cc .o .h
+
+route_planner_extC.o: $(srcdir)/route_planner_extC.cc
+	$(CXX) $(CXXFLAGS) $(INCFLAGS) -c $<
+
+engine.o: $(srcdir)/engine.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+cache.o: $(srcdir)/cache.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+algorithm.o: $(srcdir)/algorithm.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+raptor_timetable_builder.o: $(srcdir)/round_based/round_based_model/raptor_timetable_builder.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+bitset.o: $(srcdir)/utils/bitset.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+logger.o: $(srcdir)/utils/logger.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+json_parser.o: $(srcdir)/utils/json_parser.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+json_utf8.o: $(srcdir)/utils/json_utf8.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+utility.o: $(srcdir)/utility.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+geo.o: $(srcdir)/geo.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+$(DLLIB): $(OBJS) 
+	$(ECHO) linking shared-object $(DLLIB)
+	$(Q)  $(LDSHAREDXX) -o $@ $(OBJS) $(LIBPATH) $(LOCAL_LIBS) $(LIBS) $(DLDFLAGS)
+
+
+
+
+

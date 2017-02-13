@@ -1,7 +1,8 @@
-# Module or tool name
-Copyright owner e.g. "Copyright (C) 2017 Acme http://www.acme.org - Acme srl"
+# Algorithms Optimized Delivering
+Copyright (C) 2017 GOL Lab http://webgol.dinfo.unifi.it/ - University of Florence"
 
 Brief description and links to documents where to find details and links to online tools
+A demo is available at http://servicemap.disit.org
 
 **Dependencies:**
 

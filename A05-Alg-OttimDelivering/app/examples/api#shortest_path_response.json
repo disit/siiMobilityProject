@@ -1,0 +1,62 @@
+{
+	"message_version": "1.0",
+	"journey": {
+		"search_route_type": "public_transport",
+		"search_max_feet_km": 0.1,
+		"start_datetime": "2016-10-16T12:00:00",
+		"source_node": {
+			"node_id": "520127898",
+			"lat": 43.771033,
+			"lon": 11.248001
+		},
+		"destination_node": {
+			"node_id": "262898681",
+			"lat": 43.921963,
+			"lon": 10.925761
+		},
+		"routes": [{
+			"eta": "2016-10-16T15:35:57",
+			"distance": 1.3024752305696008,
+			"arc": [{
+				"distance": 0.0332,
+				"start_datetime": "2013-10-16T15:34:00",
+				"end_datetime": "2013-10-16T15:34:02",
+				"transport": "public_transport",
+				"transport_provider": "ATAF",
+				"transport_service_type": "bus",
+				"source_node": {
+					"node_id": "268443860",
+					"lat": 11.267247200012207,
+					"lon": 43.7780876159668
+				},
+				"destination_node": {
+					"node_id": "2473227",
+					"lat": 11.267382621765137,
+					"lon": 43.77780532836914
+				}
+			}, {
+				"distance": 0.03421,
+				"start_datetime": "2013-10-16T15:34:02",
+				"end_datetime": "2013-10-16T15:34:06",
+				"transport": "foot",
+				"transport_provider": null,
+				"transport_service_type": null,
+				"source_node": {
+					"node_id": "2473227",
+					"lat": 11.267382621765137,
+					"lon": 43.77780532836914
+				},
+				"destination_node": {
+					"node_id": "246843547",
+					"lat": 11.267552375793457,
+					"lon": 43.777523040771484
+				}
+			}]
+		}]
+	},
+	"response": {
+		"current_operation": "shortest path calculation",
+		"error_code": "0",
+		"error_message": "successful"
+	}
+}

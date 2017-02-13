@@ -1,0 +1,55 @@
+
+Folders
+-------
+
+root +
+     |
+     +- include    //
+     |
+     +- doc        Project documentation, requirements, 
+     |             specifications and api documents.
+     |
+     +- data       Sample data files.
+     |      
+     +- cache      Serialized input files.        
+     |
+     +- src        Sources for the main application.
+     |
+     +- log        Log files
+
+Building
+--------
+
+ $ make 
+
+Requirements
+------------
+
+To build the application:
+
+ * G++ 5.x
+ * Boost Graph Library 1.60.x
+ * Boost Program Options 1.60.x
+ * Boost Serialization Library 1.60.x
+ * xmlrpc-c 1.06.x
+ * Xerces-C++ 3.1.x
+
+ * cURLpp 0.8.x ( -lcurl )
+
+ // tmp
+ * libosmpbf-dev libprotobuf-dev ( only for OSM data )
+ 
+To run the application:
+
+ * Boost Program Options Shared Library 1.60.x
+ * Boost Serialization Shared Library 1.60.x
+ * Xerces-C++ 3.1.x
+
+ * cURLpp 0.8.x ( -lcurl )
+
+ // tmp
+ * libosmpbf-dev libprotobuf-dev ( only for OSM data )
+
+ ./sii_mobility source_id target_id data/PATH_TO_DATA
+
+ ( make 2>&1 | grep --color -iP "\^|warning:|error:|" )
