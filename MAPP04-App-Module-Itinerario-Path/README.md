@@ -1,17 +1,15 @@
-# Module or tool name
-Copyright owner e.g. "Copyright (C) 2017 Acme http://www.acme.org - Acme srl"
+# App Module Itinerario
 
-Brief description and links to documents where to find details and links to online tools
+App Module Shortest Path.
 
-**Dependencies:**
+- The **App Module Shortest Path** allows searching the shortest path from one point to another, chosen from the current GPS position or a selected point on the map. You can also define the intermediate stages.
 
-- dependency 1 (e.g. Tomcat 7+, MySQL 5.5+)
-- dependency 2
+**Repository GitHub:**
 
-**Installation:**
+https://github.com/sPaolettiGeoin/siiMobilityAppKit.git
+- added module PathFinder (/www/js/modules/pathFinder)
+- added query call API shortest path
 
-- build sources
-- step 1
-- step 2
+To install PathFinder module, extract pathFinder.rar in /www/js/modules/pathFinder
 
 **License:** GNU Affero GPL version 3 ( AGPL )
