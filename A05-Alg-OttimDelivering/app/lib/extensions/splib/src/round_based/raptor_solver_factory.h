@@ -9,8 +9,7 @@ namespace gol {
 /**
 *
 */
-class raptor_solver_factory 
-{
+class raptor_solver_factory {
  public:
   static raptor_solver* get_solver_for(
       timetable_Rt& tt,
@@ -24,10 +23,9 @@ class raptor_solver_factory
     if (algorithm == "basic_raptor") 
     {
       logger(logINFO) 
-        << left("[solver] ", 14) 
-        << "Round-Based Public Transit Routing algorithm"; 
-      return new DP_raptor_solver <basic_raptor_algorithm>(
-        tt, svec, tvec, request_time);
+          << left("[solver] ", 14) 
+          << "Round-Based Public Transit Routing algorithm"; 
+      return new DP_raptor_solver <RAPTOR_algorithm>(tt, svec, tvec, request_time);
     }
     throw solver_exception();   
   }

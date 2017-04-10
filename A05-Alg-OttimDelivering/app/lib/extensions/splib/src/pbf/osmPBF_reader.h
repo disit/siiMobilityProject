@@ -1,3 +1,27 @@
+/*
+Copyright (c) 2012, Canal TP
+All rights reserved.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Canal TP nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL CANAL TP BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #ifndef GOL_PBF_OSM_READER_H_
 #define GOL_PBF_OSM_READER_H_
@@ -16,6 +40,7 @@
 #include "osm_tag.h"       // <osmpbf/osmformat.pb.h>
 #include "osm_reference.h" // <osmpbf/osmformat.pb.h>
 
+#include "../config.h"
 #include "../utils/logger.h"
 
 namespace gol { 
@@ -39,16 +64,21 @@ class osm_reader {
   {
     if (!file.is_open())
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "Unable to open the file " 
         << filename;
     
     buffer        = new char[max_uncompressed_blob_size];
     unpack_buffer = new char[max_uncompressed_blob_size];
+    
+    boost::filesystem::path root = 
+        boost::filesystem::current_path() / 
+        boost::filesystem::path(RELATIVE_DIR);
     logger(logINFO) 
-      << left("[pbf-reader]", 14) 
+      << left("[parserPBF]", 14) 
       << left(">", 3) 
-      << boost::filesystem::path(filename);
+      << ((boost::filesystem::path(filename).generic_string()).
+            substr((root.generic_string()).length()));
   }
 
   ~osm_reader() 
@@ -72,8 +102,8 @@ class osm_reader {
     file.open(_filename.c_str(), std::ios::binary);
     if (!file.is_open())
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
-        << "Unable to reset the parser for " 
+        << left("[parserPBF]", 14) 
+        << "Unable to reset the parser > " 
         << _filename; 
     this->finished = false;     
   }    
@@ -90,7 +120,7 @@ class osm_reader {
           // nothing
         } else {
           logger(logWARNING) 
-            << left("[pbf-reader]", 14) 
+            << left("[parserPBF]", 14) 
             << "Unknown blob type: " 
             << header.type();
         }
@@ -114,7 +144,7 @@ class osm_reader {
     // read the first 4 bytes of the file, this is the size of the blob-header
     if ( !file.read((char*)&sz, 4) ) {
       //logger(logINFO) 
-      //  << left("[pbf-reader]", 14) 
+      //  << left("[parserPBF]", 14) 
       //  << "we finished reading the file ";
       this->finished = true;
       return result;
@@ -122,18 +152,18 @@ class osm_reader {
     sz = ntohl(sz); // convert the size from network byte-order to host byte-order
     if (sz > max_blob_header_size)
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "Blob-header-size is bigger then allowed " 
         << sz << " > " << max_blob_header_size;
     this->file.read(this->buffer, sz);
     if (!this->file.good())
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "Unable to read blob-header from file";
     // parse the blob-header from the read-buffer
     if (!result.ParseFromArray(this->buffer, sz))
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "Unable to parse blob header";
     
     return result;
@@ -146,15 +176,15 @@ class osm_reader {
     int32_t sz = header.datasize();
     if (sz > max_uncompressed_blob_size)
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "Blob-size is bigger then allowed";
     if (!this->file.read(buffer, sz))
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "Unable to read blob from file";
     if (!blob.ParseFromArray(this->buffer, sz))
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "Unable to parse blob";
 
     // if the blob has uncompressed data
@@ -163,7 +193,7 @@ class osm_reader {
       // check that raw_size is set correctly
       if (sz != blob.raw_size())
         logger(logWARNING) 
-          << left("[pbf-reader]", 14) 
+          << left("[parserPBF]", 14) 
           << "Reports wrong raw_size: " 
           << blob.raw_size() << " bytes";
       memcpy(unpack_buffer, buffer, sz);
@@ -182,24 +212,24 @@ class osm_reader {
 
       if (inflateInit(&z) != Z_OK) {
         logger(logERROR) 
-          << left("[pbf-reader]", 14) 
+          << left("[parserPBF]", 14) 
           << "Failed to init zlib stream";
       }
       if (inflate(&z, Z_FINISH) != Z_STREAM_END) {
         logger(logERROR) 
-          << left("[pbf-reader]", 14) 
+          << left("[parserPBF]", 14) 
           << "Failed to inflate zlib stream";
       }
       if (inflateEnd(&z) != Z_OK) {
         logger(logERROR) 
-          << left("[pbf-reader]", 14) 
+          << left("[parserPBF]", 14) 
           << "Failed to deinit zlib stream";
       }
       return z.total_out;
     }
     if (blob.has_lzma_data()) {
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "lzma-decompression is not supported";
     }
     return 0;
@@ -210,7 +240,7 @@ class osm_reader {
     OSMPBF::PrimitiveBlock primblock;
     if (!primblock.ParseFromArray(this->unpack_buffer, sz))
       logger(logERROR) 
-        << left("[pbf-reader]", 14) 
+        << left("[parserPBF]", 14) 
         << "Unable to parse primitive block";
 
     for (int i = 0, l = primblock.primitivegroup_size(); i < l; i++) {
@@ -228,8 +258,8 @@ class osm_reader {
       if (pg.has_dense()) {
         OSMPBF::DenseNodes dn = pg.dense();
         uint64_t id = 0;
-        double lon = 0;
-        double lat = 0;
+        double lon  = 0;
+        double lat  = 0;
         int current_kv = 0;
         for (int i = 0; i < dn.id_size(); ++i) {
           id += dn.id(i);

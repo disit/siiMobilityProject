@@ -1,7 +1,7 @@
 {
 	"message_version": "1.0",
 	"journey": {
-		"search_route_type": "public_transport",
+		"search_route_type": "public_transport_optimization",
 		"search_max_feet_km": 0.1,
 		"start_datetime": "2016-10-16T12:00:00",
 		"source_node": {

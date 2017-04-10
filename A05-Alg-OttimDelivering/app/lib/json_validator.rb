@@ -366,8 +366,8 @@ module JSONValidator
 
     @@node = ValidateHash.new('Node', 'Details about a node in the graph',
       :node_id => [:optional, '', ValidateString.new],
-      :lat => [:optional, '', ValidateFloat.new],
-      :lon => [:optional, '', ValidateFloat.new])
+      :lat => [:required, '', ValidateFloat.new],
+      :lon => [:required, '', ValidateFloat.new])
 
     @@journey = ValidateHash.new('Route', 'Represents the details about the journey that must be optimized',
       :search_route_type => [:required, '', ValidateString.new],
@@ -382,7 +382,6 @@ module JSONValidator
 
     @@arc = ValidateHash.new('Arc details', 'In the optimization response, provides details about a single node-to-node arc in the computed journey',
       :distance => [:required, '', ValidateFloat.new],
-      :desc => [:required, '', ValidateString.new],
       :start_datetime => [:required, '', ValidateString.new],
       :end_datetime => [:required, '', ValidateString.new],
       :transport => [:required, '', ValidateString.new],
@@ -398,7 +397,7 @@ module JSONValidator
 
     @@optimized_routes = ValidateHash.new('Route response', 'Describes an optimized journey',
       @@journey.hash.merge({
-        :route => [:required, '', ValidateArray.new(@@route)]}))
+        :routes => [:required, '', ValidateArray.new(@@route)]}))
 
     @@error_status = ValidateHash.new('Error status', 'Used to notify any errors during the optimization process',
       :current_operation => [:optional, '', ValidateString.new],

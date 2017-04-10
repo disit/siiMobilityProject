@@ -1,3 +1,20 @@
+// This file is part of Sii-Mobility - Algorithms Optimized Delivering.
+//
+// Copyright (C) 2017 GOL Lab http://webgol.dinfo.unifi.it/ - University of Florence
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with This program.  If not, see <http://www.gnu.org/licenses/>.
+
 #ifndef GOL_COMMON_H_
 #define GOL_COMMON_H_
 
@@ -29,16 +46,9 @@
 #include <boost/mpl/not.hpp>
 
 #include "config.h"
-#include "utility.h"
-#include "exception.h"
-#include "geo.h"
-#include "utils/stopwatch.h"
-#include "utils/logger.h"
-#include "utils/bitset.h"
-#include "route.h"
 
 namespace gol {	
-	
+
 // structure to hold statistical information.
 struct stats_t {
   stats_t() 
@@ -51,5 +61,13 @@ struct stats_t {
 };
 
 } // namesocae gol
+
+#include "utility.h"
+#include "exception.h"
+#include "geo.h"
+#include "utils/stopwatch.h"
+#include "utils/logger.h"
+#include "utils/bitset.h"
+#include "route.h"
 
 #endif  // GOL_COMMON_H_

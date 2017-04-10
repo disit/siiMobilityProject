@@ -1,3 +1,20 @@
+// This file is part of Sii-Mobility - Algorithms Optimized Delivering.
+//
+// Copyright (C) 2017 GOL Lab http://webgol.dinfo.unifi.it/ - University of Florence
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with This program.  If not, see <http://www.gnu.org/licenses/>.
+
 #ifndef GOL_CACHE_H_
 #define GOL_CACHE_H_
 
@@ -14,8 +31,9 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/filesystem.hpp>
 
-#include "data_extraction/road_network_parser.h"
-#include "data_extraction/public_transport_parser.h"
+//#include "data_extraction/sqlite/sqlite_helper.h"
+#include "data_extraction/road_network_dext.h"
+#include "data_extraction/public_transport_dext.h"
 
 namespace gol { 
   namespace cache {
@@ -28,20 +46,29 @@ namespace gol {
   template <
       typename GraphT, 
       typename VertexMap,
-      typename RestrictionMap>
+      typename EdgeMap,
+      typename Constraints>
   bool load_road_network(
       GraphT*         g, 
-      VertexMap*      vtx, 
-      RestrictionMap* res,
+      VertexMap*      vtx,
+      EdgeMap*        edg,
+      Constraints*    ctr, 
       std::string     filename) 
   {
+    typedef typename boost::graph_traits<GraphT>::edge_iterator 
+      edge_iterator;
+
     try {
       std::ifstream ifs(filename.c_str());
       if (ifs.good()) {
         boost::archive::binary_iarchive ia(ifs);
         ia >> BOOST_SERIALIZATION_NVP(*g);
         ia >> BOOST_SERIALIZATION_NVP(*vtx);
-        ia >> BOOST_SERIALIZATION_NVP(*res);
+        //ia >> BOOST_SERIALIZATION_NVP(*edg);
+        BGL_FORALL_EDGES_T(e, *g, GraphT) {
+          edg->insert( std::make_pair((*g)[e].edge_index, e) );
+        }       
+        //ia >> BOOST_SERIALIZATION_NVP(*ctr);
         ifs.close();
         return true;
       } else {
@@ -49,7 +76,7 @@ namespace gol {
       }
     } catch (boost::archive::archive_exception& e) {
       throw data_exception( 
-        std::string("load_road_network(): ") +  e.what());
+        std::string("load_road_network(): ") + e.what());
     }
   }
 
@@ -57,11 +84,13 @@ namespace gol {
   template <
       typename GraphT, 
       typename VertexMap,
-      typename RestrictionMap>
+      typename EdgeMap,
+      typename Constraints>     
   void save_road_network(
       const GraphT&         g, 
-      const VertexMap&      vtx, 
-      const RestrictionMap& res,
+      const VertexMap&      vtx,
+      const EdgeMap&        edg,
+      const Constraints&    ctr, 
       std::string           filename) 
   {
     std::ofstream ofs(filename.c_str());
@@ -69,47 +98,62 @@ namespace gol {
     boost::archive::binary_oarchive oa(ofs);
     oa << BOOST_SERIALIZATION_NVP(g);
     oa << BOOST_SERIALIZATION_NVP(vtx);
-    oa << BOOST_SERIALIZATION_NVP(res);
+    //oa << BOOST_SERIALIZATION_NVP(edg);
+    //oa << BOOST_SERIALIZATION_NVP(ctr);
+    
     ofs.close();
   }
 
   template <
       typename GraphT, 
       typename VertexMap,
-      typename RestrictionMap, 
+      typename EdgeMap,
+      typename Constraints,        
       typename BuilderT>
   void parse_road_network(
     GraphT*         g, 
-    VertexMap*      vtx, 
-    RestrictionMap* res,    
+    VertexMap*      vtx,
+    EdgeMap*        edg,
+    Constraints*    ctr, 
     BuilderT*       builder, 
     sys_path        filename) 
-  { 
+  {
+    logger(logINFO) 
+        << left("[cache]", 14) 
+        << "Open Connection to DB";   
+    
     // OpenStreetMap
     if (((filename).extension()) == ".pbf") 
     {
-      logger(logINFO) 
-        << left("[cache]", 14) 
-        << "Parsing OSM Protocolbuffer Binary Format";
-      
-      osm::roadn_pbf_parser<BuilderT> director(
-        filename.generic_string(), builder);
+      osm::parserPBF<BuilderT> director(
+        filename.generic_string(), 
+        ( boost::filesystem::current_path() / 
+          sys_path(RELATIVE_DIR)            /
+          sys_path("data")                  /
+          sys_path(DEFAULT_DB_NAME) ).
+        generic_string(), 
+        builder);
       director.construct_model();
+
+      //osm::roadn_pbf_parser<BuilderT> director2(
+      //  filename.generic_string(), builder);
+      //director2.construct_model();
     } 
     else if (((filename).extension()) == ".osm") 
-    {
-      logger(logINFO) 
-        << left("[cache]", 14) 
-        << "Open the OSM XML Format"; 
-      
-      osm::roadn_sax2_parser<BuilderT> director(
-        filename.generic_string(), builder);
+    {      
+      osm::parserSAX2<BuilderT> director(
+        filename.generic_string(),
+        ( boost::filesystem::current_path() / 
+          sys_path(RELATIVE_DIR)            /
+          sys_path("data")                  /
+          sys_path(DEFAULT_DB_NAME) ).
+        generic_string(),          
+        builder);
       director.construct_model();
     } 
     else {
       logger(logERROR) 
         << left("[cache]", 14) 
-        << "parse_road_network(): "
         << "File extension unknown";
       throw data_exception( 
         std::string("parse_road_network(): File extension unknown ") 
@@ -120,12 +164,14 @@ namespace gol {
   template <
       typename GraphT, 
       typename VertexMap,
-      typename RestrictionMap, 
+      typename EdgeMap,
+      typename Constraints,        
       typename BuilderT>
   void retrieve_road_network(
     GraphT*         g, 
     VertexMap*      vtx,
-    RestrictionMap* res, 
+    EdgeMap*        edg,
+    Constraints*    ctr,
     BuilderT*       builder, 
     std::string     filename, 
     std::string     model) 
@@ -141,8 +187,8 @@ namespace gol {
         sys_path((std::string(filename)
                       .append(".")
                       .append(model))
-                      .append(".gsrz"))
-          .filename();
+                    .append(".gsrz"))
+              .filename();
       sys_path data = 
         root / 
         sys_path(filename); 
@@ -151,21 +197,27 @@ namespace gol {
       {
         logger(logINFO) 
           << left("[cache]", 14) 
-          << "Loading > " 
-          << serialized.generic_string();        
+          << "Loading Graph >> " 
+          <<  sys_path((std::string(filename)
+                  .append(".")
+                  .append(model))
+                .append(".gsrz"))
+              .filename();          
+        
         load_road_network(
-          g, vtx, res, serialized.generic_string());
+          g, vtx, edg, ctr, serialized.generic_string());
       } 
       else 
       {
         parse_road_network(
-          g, vtx, res, builder, data.generic_string());
+          g, vtx, edg, ctr, builder, data.generic_string());
         
         logger(logINFO) 
-          << left("[cache]", 14) 
-          << "Serializing Road Network Graph ";        
+            << left("[cache]", 14) 
+            << "<< Serializing Graph ";            
+        
         save_road_network(
-          *g, *vtx, *res, serialized.generic_string());
+          *g, *vtx, *edg, *ctr, serialized.generic_string());
       }
 
     } catch (std::exception& e) {
@@ -175,7 +227,7 @@ namespace gol {
       throw data_exception( 
         std::string("retrieve_road_network(): ") + e.what()); 
     }
-  }
+  } 
 
   // Gets the serialized entry from cache for that filename.
   bool load_public_transport(timetable_Rt* tt, std::string filename);
@@ -195,7 +247,7 @@ namespace gol {
     std::string model);
 
 
-  }  // namespace cache
+  }  // namespace cache    
 }  // namespace gol
 
 #endif  // GOL_CACHE_H_

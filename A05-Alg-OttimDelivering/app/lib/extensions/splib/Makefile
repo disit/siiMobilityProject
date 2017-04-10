@@ -2,8 +2,8 @@
 srcdir = src
 
 CXX = g++
-CXXFLAGS = -g -O0 -std=c++1y -fno-fast-math -Wall -Wextra -pedantic 
-LDFLAGS = -lpthread -ldl -lcrypt -lm -lc -lboost_system -lboost_filesystem -lboost_serialization -lxerces-c -lprotobuf-lite -losmpbf -lz 
+CXXFLAGS = -g -O3 -std=c++1y -fno-fast-math -Wall -Wextra -pedantic -DBOOST_UBLAS_NDEBUG -DBOOST_DISABLE_ASSERTS -DARMA_NO_DEBUG
+LDFLAGS = -lpthread -ldl -lcrypt -lm -lc -lboost_system -lboost_filesystem -lboost_serialization -lxerces-c -lprotobuf-lite -losmpbf -lsqlite3 -lz
 
 PROGRAMS = \
 geo.o \
@@ -14,6 +14,7 @@ json_parser.o \
 logger.o \
 raptor_timetable_builder.o \
 algorithm.o \
+sqlite_database_helper.o \
 cache.o \
 engine.o \
 main.o
@@ -43,6 +44,9 @@ engine.o: $(srcdir)/engine.cc
 	$(CXX) $(CXXFLAGS) -c $<
 
 cache.o: $(srcdir)/cache.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+sqlite_database_helper.o: $(srcdir)/data_extraction/sqlite/sqlite_database_helper.cc
 	$(CXX) $(CXXFLAGS) -c $<
 
 algorithm.o: $(srcdir)/algorithm.cc

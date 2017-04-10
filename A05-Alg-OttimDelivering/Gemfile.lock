@@ -71,7 +71,6 @@ GEM
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     oauth (0.5.1)
-    puma (3.6.2)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -102,6 +101,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    rice (2.1.1)
     rosemary (0.4.4)
       activemodel (>= 3.0.20)
       builder (>= 2.1.2)
@@ -136,8 +136,8 @@ PLATFORMS
 DEPENDENCIES
   byebug
   listen (~> 3.0.5)
-  puma (~> 3.0)
   rails (~> 5.0.1)
+  rice
   rosemary
   spring
   spring-watcher-listen (~> 2.0.0)

@@ -4,8 +4,7 @@
 namespace gol {
 
 template <typename DPAlgorithm>
-class DP_raptor_solver : 
-  public raptor_solver 
+class DP_raptor_solver : public raptor_solver 
 {
  public:
   DP_raptor_solver( 
@@ -23,12 +22,7 @@ class DP_raptor_solver :
   ~DP_raptor_solver() {}
     
   virtual void solve() override {    
-    DPAlgorithm::compute(
-      (this->_tt), 
-      _svec, 
-      _tvec, 
-      _pareto_set, 
-      MAX_TRANSFER);  
+    DPAlgorithm::compute((this->_tt), _svec, _tvec, _pareto_set, MAX_TRANSFER);  
   }
 
   virtual round_based_solver_result get_result() override { 

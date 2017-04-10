@@ -16,18 +16,19 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module SiiMobilityApi
+module SiiMobility
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    config.autoload_paths << Rails.root.join('app/lib/')
-    config.autoload_paths << Rails.root.join('app/lib/extensions/')
+     config.enable_dependency_loading = true
+     config.autoload_paths << Rails.root.join('app/lib')
+     config.autoload_paths << Rails.root.join('app/lib/extensions')
+     config.autoload_paths << Rails.root.join('app/lib/extensions/lib')
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-    
-    config.action_controller.always_permitted_parameters = %w( controller action message_version journey api ) 
+    config.action_controller.always_permitted_parameters = %w( controller action message_version journey api )
   end
 end

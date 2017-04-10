@@ -1,18 +1,24 @@
-# Algorithms Optimized Delivering
-Copyright (C) 2017 GOL Lab http://webgol.dinfo.unifi.it/ - University of Florence"
+# README
 
-Brief description and links to documents where to find details and links to online tools
-A demo is available at http://servicemap.disit.org
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-**Dependencies:**
+Things you may want to cover:
 
-- dependency 1 (e.g. Tomcat 7+, MySQL 5.5+)
-- dependency 2
+* Ruby version
 
-**Installation:**
+* System dependencies
 
-- build sources
-- step 1
-- step 2
+* Configuration
 
-**License:** GNU Affero GPL version 3 ( AGPL )
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...

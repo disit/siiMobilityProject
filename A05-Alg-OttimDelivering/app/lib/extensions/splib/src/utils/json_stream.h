@@ -1,4 +1,3 @@
-
 #ifndef GOL_UTILS_JSON_OFS_H_
 #define GOL_UTILS_JSON_OFS_H_
 
@@ -40,6 +39,7 @@ class jofstream {
   template<typename T> 
   jofstream& operator<<(const T& data) {
     if (_stream.is_open()) {
+      _stream.precision(7);
       _stream << dump(data);
     }
     return *this;
@@ -52,6 +52,7 @@ class jofstream {
   jofstream& operator<<(ostream_manipulator pf) {
     if (_stream.is_open()) {
       _stream << pf;
+      _stream.precision(7);
     }
     return *this;
   }
@@ -88,6 +89,7 @@ class jofstream {
   template<typename V> 
   std::string dump_value(const V& value) const {
     std::ostringstream oss;
+    oss.precision(7);
     oss << transcode_rfc4627(value);
     return oss.str();
   }
@@ -98,7 +100,8 @@ class jofstream {
 
   template<typename K, typename V> 
   std::string dump_value(const std::pair<const K, V>& pair) const {
-    std::ostringstream oss;
+    std::ostringstream oss; 
+    oss.precision(7);
     oss << "[" << dump(pair.first) << ", " << dump(pair.second) << "]";
     return oss.str();
   }
@@ -114,6 +117,7 @@ class jofstream {
   template<typename C> 
   std::string dump_simple_container(const C& container) const {
     std::ostringstream oss;
+    oss.precision(7);
     typename C::const_iterator it = container.begin();
     oss << "[" << dump(*it);
     for (++ it ; it != container.end() ; ++ it) {
@@ -126,6 +130,7 @@ class jofstream {
   template<typename M> 
   std::string dump_associative_container(const M& map) const {
     std::ostringstream oss;
+    oss.precision(7);
     typename M::const_iterator it = map.begin();
     oss << "{" << dump_pair(*it);
     for (++ it ; it != map.end() ; ++ it) {

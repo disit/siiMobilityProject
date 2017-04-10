@@ -1,3 +1,20 @@
+// This file is part of Sii-Mobility - Algorithms Optimized Delivering.
+//
+// Copyright (C) 2017 GOL Lab http://webgol.dinfo.unifi.it/ - University of Florence
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with This program.  If not, see <http://www.gnu.org/licenses/>.
+
 #ifndef GOL_MULTIMODAL_JOURNEY_H_
 #define GOL_MULTIMODAL_JOURNEY_H_
 
@@ -23,7 +40,7 @@ enum tmode_t {
 
 struct route_node
 {
-  // ndoe properties
+  // node properties
   enum route_node_type 
   {
      wheelchair_boarding  =  1,  // wheelchair accessible
@@ -55,6 +72,7 @@ struct route_edge
   route_node   nFrom;
   route_node   nTo;
   double       length;
+  std::string  highway_value;
   std::string  desc;
   std::string  transport;
   std::string  transport_provider;
@@ -78,6 +96,7 @@ class Route
   void
   add_route_edge(
     double      length,
+    std::string highway_value,    
     std::string desc,
     std::string id_from,
     double      lon_from,
@@ -87,6 +106,7 @@ class Route
     double      lat_to)
   {
    nodeT nFrom, nTo;
+   
    nFrom.id  = id_from;
    nFrom.lon = lon_from;
    nFrom.lat = lat_from;
@@ -99,6 +119,8 @@ class Route
    edge.nTo     = nTo;
    edge.desc    = desc;
    edge.length  = length;
+
+   edge.highway_value = highway_value;
 
    _edges.push_back(edge);
   }
@@ -157,7 +179,8 @@ class optimized_routes_solution
     typedef std::map<std::string,
         boost::variant<std::string, double> >      properties;        
     typedef std::map<std::string,
-        boost::variant<std::string, geometry> >    feature;     // {k:v, k:{k:v, k:[[]], ..}, ..}
+        boost::variant<
+           std::string, geometry, properties> >    feature;     // {k:v, k:{k:v, k:[[]], ..}, ..}
     typedef std::vector<feature>                   features;    // [{k:v, k:{k:v, k:[[]], ..}, ..}, ..]
     typedef std::map<std::string,
         boost::variant<std::string, features> >    geojson;     // {k:v, k:[{k:v, {k:v, k:[[]], ..}, ..}, ..], ..}
@@ -165,12 +188,24 @@ class optimized_routes_solution
     if (_routes.empty())
       return;
 
+    std::vector<std::string> color =
+      {"#FF8100", "#00204F", "#A00000", "#004200", "#FFE118", "#820040", "#00FFFF", "#00120C", "#2F2F2F"};
+    int ncolor = color.size();   
+
     int  nroute = 0;
     features ftrs;
 
     for (auto route : _routes)
     {
       ++nroute;
+
+      properties prop;
+      prop["stroke"]         =  color[((nroute % ncolor) + ncolor) % ncolor];
+      prop["stroke-width"]   =  6;
+      prop["stroke-opacity"] =  0.4;
+      prop["fill"]           =  color[((nroute % ncolor) + ncolor) % ncolor];                 
+      prop["fill-opacity"]   =  0.5;
+      prop["lanes"]          =  10;
 
       auto redges        = route.get_edges();
       auto reit          = redges.begin();
@@ -197,6 +232,7 @@ class optimized_routes_solution
       feature ftr;
       ftr["type"]        = "Feature";
       ftr["geometry"]    = geo;
+      ftr["properties"]  = prop;
       ftrs.push_back(ftr);
 
     }
@@ -216,8 +252,8 @@ class optimized_routes_solution
         boost::filesystem::path(RELATIVE_DIR) / outfile;
 
       logger(logINFO) 
-        << left("[route]", 14) 
-        << "Saving GEOjson > " 
+        << left("[*]", 14) 
+        << "Saving GEOjson >> " 
         << output;
 
       jofstream jstream( output.generic_string() ); 

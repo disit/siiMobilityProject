@@ -1,1 +1,0 @@
-curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d @app/examples/api#shortest_path_request.json localhost:3000/api/shortest_path

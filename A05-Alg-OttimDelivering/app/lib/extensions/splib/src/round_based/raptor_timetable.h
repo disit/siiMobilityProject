@@ -36,10 +36,7 @@ struct stop_Rt
   }
 
   friend std::ostream& operator<<(std::ostream &os, const stop_Rt& s) {
-    return os << "stop = [ lon, lat ] = [ " 
-              << s.lon << ", " 
-              << s.lat << " ]" 
-              << std::endl;
+    return os <<"stop = [ lon, lat ] = [ " << s.lon << ", " << s.lat << " ]" <<std::endl;
   }; 
 };
 
@@ -58,10 +55,8 @@ struct stime_Rt // stoptime
   }
 
   friend std::ostream& operator<<(std::ostream &os, const stime_Rt& s) {
-    return os << "stop_time = [ dep, arr ] = [ " 
-              << s.departure_time 
-              << ", " << s.arrival_time 
-              << " ]" << std::endl;
+    return os <<"stop_time = [ dep, arr ] = [ " << s.departure_time << 
+        ", " << s.arrival_time << " ]" <<std::endl;
   };   
 };
 
@@ -164,8 +159,7 @@ struct timetable_Rt
 
   void dump_routes() 
   {
-    logger(logDEBUG) 
-      << "Timetable routes: ";
+    logger(logDEBUG) << "Timetable routes: ";
     int ridx = 0;
     for (auto r : routes){
       logger(logDEBUG) 
@@ -178,23 +172,17 @@ struct timetable_Rt
 
   void dump_route_trips(uint32_t ridx)
   {
-    logger(logDEBUG) 
-      << "Timetable trips [route - " << routes[ridx].id << "]:";
+    logger(logDEBUG) << "Timetable trips [route - " << routes[ridx].id <<"]:";
     for (uint32_t tidx = routes[ridx].trips_offset;
-          tidx < (ridx == (n_routes - 1) ? 
-            trips.size() : 
-            routes[ridx + 1].trips_offset );
+          tidx < (ridx == (n_routes - 1) ? trips.size() : routes[ridx + 1].trips_offset );
           ++tidx)  
     {
       trip_Rt  trip   = trips[tidx];
       route_Rt route  = routes[ridx];
-      logger(logDEBUG) 
-        << "trip [" 
-        << tidx - routes[ridx].trips_offset << "]";
+      logger(logDEBUG) << "trip [" << tidx - routes[ridx].trips_offset << "]";
       for (uint32_t idx = 0; idx < route.n_stops; ++idx)
       {        
-        stop_Rt stop = 
-           stops[route_stops[route.route_stops_offset + idx]];
+        stop_Rt stop = stops[route_stops[route.route_stops_offset + idx]];
         time_Rt departure_time = 
            stop_times[trip.stop_times_offset + idx].departure_time;
         time_Rt arrivale_time = 
@@ -207,10 +195,12 @@ struct timetable_Rt
           << ", " 
           << to_string(arrivale_time) 
           << "] ";      
-      }        
+      }
+        
     }        
   }
     
+
 }; 
 
 struct label_Rt 

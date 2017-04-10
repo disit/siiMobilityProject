@@ -1,4 +1,3 @@
-
 SHELL = /bin/sh
 
 # V=0 quiet, V=1 verbose.  other values don't work.
@@ -12,13 +11,13 @@ NULLCMD = :
 #### Start of system configuration section. ####
 
 srcdir = src
-topdir = /home/tigli/.rvm/rubies/ruby-2.3.0/include/ruby-2.3.0
+topdir = /home/aduser/.rvm/rubies/ruby-2.3.3/include/ruby-2.3.0
 hdrdir = $(topdir)
-arch_hdrdir = /home/tigli/.rvm/rubies/ruby-2.3.0/include/ruby-2.3.0/x86_64-linux
+arch_hdrdir = /home/aduser/.rvm/rubies/ruby-2.3.3/include/ruby-2.3.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
 
-prefix = $(DESTDIR)/home/tigli/.rvm/rubies/ruby-2.3.0
+prefix = $(DESTDIR)/home/aduser/.rvm/rubies/ruby-2.3.3
 
 rubysitearchprefix = $(rubylibprefix)/$(sitearch)
 
@@ -92,7 +91,7 @@ localstatedir = $(prefix)/var
 
 sharedstatedir = $(prefix)/com
 
-sysconfdir = $(prefix)/etc
+sysconfdir = $(DESTDIR)/etc
 
 datadir = $(datarootdir)
 
@@ -107,30 +106,29 @@ bindir = $(exec_prefix)/bin
 archdir = $(rubyarchdir)
 
 
-
 CC = gcc
-CXX = g++
+CXX = g++ -std=c++1y
 LIBRUBY = $(LIBRUBY_SO)
 LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
-LIBRUBYARG_SHARED = -Wl,-R$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)
-LIBRUBYARG_STATIC = -Wl,-R/home/tigli/.rvm/rubies/ruby-2.3.0/lib -L/home/tigli/.rvm/rubies/ruby-2.3.0/lib -lruby-static
+LIBRUBYARG_SHARED = -Wl,-rpath,'$${ORIGIN}/../lib' -Wl,-R'$${ORIGIN}/../lib' -l$(RUBY_SO_NAME)
+LIBRUBYARG_STATIC = -Wl,-rpath,'${ORIGIN}/../lib' -Wl,-R'${ORIGIN}/../lib' -lruby-static
 empty =
 OUTFLAG = -o $(empty)
 COUTFLAG = -o $(empty)
 
-RUBY_EXTCONF_H = 
+RUBY_EXTCONF_H =
 cflags   =  $(optflags) $(debugflags) $(warnflags)
-cxxflags =  $(optflags) $(debugflags) $(warnflags) 
-optflags = -O3 -fno-fast-math 
+cxxflags =  $(optflags) $(debugflags) $(warnflags)
+optflags = -O3 -fno-fast-math -DBOOST_UBLAS_NDEBUG -DBOOST_DISABLE_ASSERTS -DARMA_NO_DEBUG
 debugflags = -ggdb3
-warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat -Wno-maybe-uninitialized
+warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeprecated-declarations -Wno-packed-bitfield-compat -Wno-maybe-uninitialized
 CCDLFLAGS = -fPIC
 CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC $(ARCH_FLAG)
-INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir) -I/home/tigli/.rvm/gems/ruby-2.3.0@sii_mobility_v1.2/gems/rice-2.1.1/ruby/lib/include
-DEFS     = 
-CPPFLAGS =   $(DEFS) $(cppflags)  -I/home/tigli/.rvm/gems/ruby-2.3.0@sii_mobility_v1.2/gems/rice-2.1.1/ruby/lib/include
-CXXFLAGS = -std=c++1y $(CFLAGS) -Wall -g -DSII_MOBILITY
-ldflags  = -L. -fstack-protector -rdynamic -Wl,-export-dynamic -L/home/tigli/.rvm/gems/ruby-2.3.0@sii_mobility_v1.2/gems/rice-2.1.1/ruby/lib/lib -lrice
+INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir) -I/home/aduser/.rvm/gems/ruby-2.3.3@sii_mobility_v0.2/gems/rice-2.1.1/ruby/lib/include
+DEFS     =
+CPPFLAGS =   $(DEFS) $(cppflags)  -I/home/aduser/.rvm/gems/ruby-2.3.3@sii_mobility_v0.2/gems/rice-2.1.1/ruby/lib/include
+CXXFLAGS = $(CFLAGS) -std=c++1y -Wall -DNDEBUG -DSII_MOBILITY
+ldflags  = -L. -fstack-protector -rdynamic -Wl,-export-dynamic  -L/home/aduser/.rvm/gems/ruby-2.3.3@sii_mobility_v0.2/gems/rice-2.1.1/ruby/lib/lib -lrice
 dldflags =  
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
@@ -164,7 +162,7 @@ RM = rm -f
 RM_RF = $(RUBY) -run -e rm -- -rf
 RMDIRS = rmdir --ignore-fail-on-non-empty -p
 MAKEDIRS = /bin/mkdir -p
-INSTALL = /usr/bin/install -c
+INSTALL = /usr/bin/install
 INSTALL_PROG = $(INSTALL) -m 0755
 INSTALL_DATA = $(INSTALL) -m 644
 COPY = cp
@@ -189,15 +187,15 @@ extout =
 extout_prefix = 
 target_prefix = 
 LOCAL_LIBS = 
-LIBS = -Wl,-R/home/tigli/.rvm/rubies/ruby-2.3.0/lib -L/home/tigli/.rvm/rubies/ruby-2.3.0/lib -lboost_system -lboost_filesystem -lboost_serialization -lxerces-c -lcurlpp -lcurl -lpthread -lz -lprotobuf-lite -Wl,--whole-archive -losmpbf -Wl,--no-whole-archive -L/home/tigli/.rvm/rubies/ruby-2.3.0/lib -lruby -lgmp -ldl -lcrypt -lm -lc
+LIBS = -lboost_system -lboost_filesystem -lboost_serialization -lxerces-c -lpthread -lz -lprotobuf-lite -Wl,--whole-archive -losmpbf -Wl,--no-whole-archive -Wl,-rpath,'${ORIGIN}/../lib' -Wl,-R'${ORIGIN}/../lib' -lruby -lgmp -ldl -lcrypt -lm -lsqlite3  -lc
 ORIG_SRCS = 
 SRCS = $(ORIG_SRCS) 
-OBJS = geo.o utility.o json_utf8.o json_parser.o logger.o bitset.o raptor_timetable_builder.o algorithm.o cache.o engine.o route_planner_extC.o
+OBJS = geo.o utility.o json_utf8.o json_parser.o logger.o bitset.o raptor_timetable_builder.o algorithm.o sqlite_database_helper.o cache.o engine.o route_planner_extC.o
 HDRS = 
 TARGET = splib
-TARGET_NAME = 
+TARGET_NAME = splib
 TARGET_ENTRY = Init_$(TARGET_NAME)
-DLLIB =  $(TARGET).so
+DLLIB = $(TARGET).so
 EXTSTATIC = 
 STATIC_LIB = 
 
@@ -226,43 +224,54 @@ clean:
 .SUFFIXES: .cc .o .h
 
 route_planner_extC.o: $(srcdir)/route_planner_extC.cc
-	$(CXX) $(CXXFLAGS) $(INCFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) $(INCFLAGS) -c $<
 
 engine.o: $(srcdir)/engine.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 cache.o: $(srcdir)/cache.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
+
+sqlite_database_helper.o: $(srcdir)/data_extraction/sqlite/sqlite_database_helper.cc
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 algorithm.o: $(srcdir)/algorithm.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 raptor_timetable_builder.o: $(srcdir)/round_based/round_based_model/raptor_timetable_builder.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 bitset.o: $(srcdir)/utils/bitset.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 logger.o: $(srcdir)/utils/logger.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 json_parser.o: $(srcdir)/utils/json_parser.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 json_utf8.o: $(srcdir)/utils/json_utf8.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 utility.o: $(srcdir)/utility.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
 geo.o: $(srcdir)/geo.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(ECHO) compiling $<
+	$(Q) $(CXX) $(CXXFLAGS) -c $<
 
-$(DLLIB): $(OBJS) 
+$(DLLIB): $(OBJS)
 	$(ECHO) linking shared-object $(DLLIB)
-	$(Q)  $(LDSHAREDXX) -o $@ $(OBJS) $(LIBPATH) $(LOCAL_LIBS) $(LIBS) $(DLDFLAGS)
-
-
-
-
-
+	-$(Q)$(RM) $(@)
+	$(Q) $(LDSHAREDXX) -o $@ $(OBJS) $(LIBPATH) $(LOCAL_LIBS) $(LIBS) $(DLDFLAGS)

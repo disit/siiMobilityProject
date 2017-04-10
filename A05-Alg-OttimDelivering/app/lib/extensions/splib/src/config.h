@@ -11,7 +11,7 @@
 
 #define PROGRAM_NAME                         "Sii-Mobility SPLib"
 #define PROGRAM_SHORT_NAME                   "Sii-Mobility SPLib"
-#define PROGRAM_VERSION                      "0.2"
+#define PROGRAM_VERSION                      "0.2.1"
 
 #ifndef SII_MOBILITY
 #	define RELATIVE_DIR	                     "../"
@@ -22,13 +22,15 @@
 #define PROGRAM_REVISION                     "$Rev: 1 $"
 #define DEFAULT_LOGFILE                      "log/sii_mobility.log"
 #define LOCK_FOLDER                          "/var/lock/"
+#define DEFAULT_PBF_OSMFILE                  "data/osm/pbf/bounding_box_tuscany.pbf"
+#define DEFAULT_DB_NAME                      "OSM.db"
 #define DEFAULT_GEOJSON_OUTPUTFILE           "optimized_route.geojson"
 
 #define AVERAGE_WALKING_SPEED                (5)
 #define AVERAGE_BICYCLE_SPEED                (15)
-#define AVERAGE_CAR_SPEED                    (45)
+#define CITY_AVERAGE_CAR_SPEED               (40)
 #define COUNTRY_AVERAGE_CAR_SPEED            (65)
-#define MOTORWAY_AVERAGE_CAR_SPEED           (115)
+#define MOTORWAY_AVERAGE_CAR_SPEED           (105)
 #define MAX_WALKING_SPEED                    (7)
 #define MAX_BICYCLE_SPEED                    (25)
 #define MAX_BUS_SPEED                        (70)
@@ -36,10 +38,10 @@
 
 #define MARIANA_TRENCH_DEPTH                 (-10994)
 
-// eMOA*
+// epsMOA*
 #define EPLSILON_PARETO                      (0.05)
 #define ELLIPSE_PERIPHERAL_DISTANCE_PERCENT  (20)
-#define ELLIPSE_PRUNING_THRESHOLD            (1 * 1000) // 1km
+#define ELLIPSE_PRUNING_THRESHOLD            (1 * 1000)   // 1km
 #define PENALTY_COEFF_UPHILL                 (7.92)
 #define MAX_DESC_GRAD                        (0.35)
 #define MAX_DOWNHILL_SPEED_MULTIPLIER        (1.6)

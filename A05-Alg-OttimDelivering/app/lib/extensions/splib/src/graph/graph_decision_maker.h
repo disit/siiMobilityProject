@@ -1,3 +1,20 @@
+// This file is part of Sii-Mobility - Algorithms Optimized Delivering.
+//
+// Copyright (C) 2017 GOL Lab http://webgol.dinfo.unifi.it/ - University of Florence
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with This program.  If not, see <http://www.gnu.org/licenses/>.
+
 #ifndef GOL_DECISION_MAKER_H_
 #define GOL_DECISION_MAKER_H_
 
@@ -6,7 +23,7 @@ namespace gol {
 template<typename GraphT, typename WeightT>
 class decision_maker
 {
-  typedef boost::graph_traits<GraphT> Traits;
+  typedef boost::graph_traits<GraphT>        Traits;
   typedef typename Traits::vertex_descriptor vertex_descriptor;
   typedef typename Traits::edge_descriptor   edge_descriptor;
   // a type where we will hold shortest path as lists of edges 
@@ -18,19 +35,16 @@ class decision_maker
   best_single_objective_choice(graph_solver_result& all){
     return all;
   }
-
   static 
   graph_solver_result
   euclidean_distance_choice(graph_solver_result& all){
     return all;
   }
-
   static 
   graph_solver_result
   jaccard_distance_choice(graph_solver_result& all){
     return all;
   }
-
   static 
   graph_solver_result
   euclidean_jaccard_distance_choice(graph_solver_result& all){
@@ -51,8 +65,9 @@ class decision_maker<GraphT, std::pair<int, int> >
   // a type where we will hold shortest path as lists of edges 
   typedef std::list<edge_descriptor>             path_t;
   typedef std::list<std::pair<
-     std::pair<int, int>, path_t> >              graph_solver_result;  
+                  std::pair<int, int>, path_t> > graph_solver_result;  
  public:
+
   // bicriterion solution is already sorted
   static 
   graph_solver_result

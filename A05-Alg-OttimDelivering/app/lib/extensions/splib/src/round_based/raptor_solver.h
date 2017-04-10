@@ -12,9 +12,7 @@ class raptor_solver
   virtual round_based_solver_result get_result() = 0;
 
  protected:
-  raptor_solver(timetable_Rt& tt): 
-    _tt(tt), 
-    _stats() {}
+  raptor_solver(timetable_Rt& tt): _tt(tt), _stats() {}
   ~raptor_solver() {}
 
   timetable_Rt& _tt;	
@@ -30,8 +28,9 @@ class raptor_solver
       for (auto c : path.connections) 
       {
         route.add_route_edge(
-          0,  // TODO: length
-          "", // TODO: description
+          0,  // TODO
+          "", // TODO
+          "", // TODO
           _tt.stops[c.sidx_from].id,
           _tt.stops[c.sidx_from].lon, 
           _tt.stops[c.sidx_from].lat,

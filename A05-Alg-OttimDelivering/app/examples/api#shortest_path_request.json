@@ -1,18 +1,18 @@
 {
 	"message_version": "1.0",
 	"journey": {
-		"search_route_type": "feet_optimization",
+		"search_route_type": "quietest_foot_optimization",
 		"search_max_feet_km": 0.1,
 		"start_datetime": "2016-10-16T12:00:00",
 		"source_node": {
-			"node_id": "4408332103",
-			"lat": 43.77805,
-			"lon": 11.24199
+			"node_id": "520127898",
+			"lat": 43.771033,
+			"lon": 11.248001
 		},
 		"destination_node": {
-			"node_id": "250254385",
-			"lat": 43.77703,
-			"lon": 11.24346 
+			"node_id": "262898681",
+			"lat": 43.921963,
+			"lon": 10.925761
 		}
 	}
 }
